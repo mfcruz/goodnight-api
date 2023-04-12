@@ -15,10 +15,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_092029) do
   enable_extension "plpgsql"
 
   create_table "sleep_times", force: :cascade do |t|
-    t.datetime "started_at", default: "2023-04-11 09:38:03", null: false
+    t.datetime "started_at", default: "2023-04-12 15:16:53", null: false
     t.datetime "ended_at"
+    t.integer "sleep_duration_in_seconds"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sleep_times_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -27,4 +30,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_092029) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "sleep_times", "users"
 end
