@@ -9,3 +9,14 @@
 5.times do
   user = User.create({name: Faker::Name.name})
 end
+
+# user with sleep history
+unless User.last.blank?
+  User.last(3).each do |user|
+    5.times do
+      user.sleep_times.create(started_at: Time.current,
+                              ended_at: Time.current,
+                              sleep_duration_in_seconds: rand(1000))
+    end
+  end
+end

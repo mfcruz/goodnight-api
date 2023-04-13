@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :users do
+        post 'follow/:followee_id', to: 'users#follow', as: 'follow'
+        delete 'unfollow/:followee_id', to: 'users#unfollow', as: 'unfollow'
+        
         resources :sleep_times do
           collection do
             post "clock_in", to: "sleep_times#clock_in"
