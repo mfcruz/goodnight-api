@@ -6,7 +6,8 @@ Rails.application.routes.draw do
       resources :users do
         resources :sleep_times do
           collection do
-            post 'clock_in', to: 'sleep_times#clock_in'
+            post "clock_in", to: "sleep_times#clock_in"
+            patch "clock_out", to: "sleep_times#clock_out"
           end
         end
       end

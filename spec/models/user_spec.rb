@@ -31,4 +31,19 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe ".ongoing_sleep" do
+    context "sleep_times is empty" do
+      it "returns nil" do
+        expect(current_user.ongoing_sleep).to be_nil
+      end
+    end
+
+    context "sleep_times is not empty" do
+      it "returns last sleep_time" do
+        sleep_times = create_list(:sleep_time, 3, user: current_user)
+        expect(current_user.ongoing_sleep).to eq(sleep_times.last)
+      end
+    end
+  end
 end
