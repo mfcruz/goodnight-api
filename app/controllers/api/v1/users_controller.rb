@@ -17,6 +17,10 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  def followees_sleep_records
+    render json: {data: current_user.followees_previous_week_sleep_times}, status: :ok
+  end
+
   private
 
   def followee

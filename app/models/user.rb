@@ -33,4 +33,13 @@ class User < ApplicationRecord
 
     followed_users.find_by(followee_id: followee.id).destroy
   end
+
+  def followees_previous_week_sleep_times
+    start_of_week = (Time.current - 7.days).beginning_of_week
+    end_of_week = (Time.current - 7.days).end_of_week
+
+    SleepTime.where(user: followees, created_at: start_of_week..end_of_week)
+             .where.not(ended_at: nil)
+             .order(sleep_duration_in_seconds: :asc)
+  end
 end

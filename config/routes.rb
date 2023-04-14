@@ -6,7 +6,8 @@ Rails.application.routes.draw do
       resources :users do
         post 'follow/:followee_id', to: 'users#follow', as: 'follow'
         delete 'unfollow/:followee_id', to: 'users#unfollow', as: 'unfollow'
-        
+        get 'followees/sleep_records', to: 'users#followees_sleep_records', as: 'followees_sleep_records'
+
         resources :sleep_times do
           collection do
             post "clock_in", to: "sleep_times#clock_in"

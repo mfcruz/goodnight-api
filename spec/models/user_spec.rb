@@ -92,4 +92,26 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe "followees_previous_week_sleep_times" do
+    it "returns lists" do
+      followee_1 = create(:user)
+      followee_2 = create(:user)
+      a_date_last_week = Time.current - 7.days
+
+      list_1 = create_list(:sleep_time, 2, user: followee_1, ended_at: a_date_last_week,
+                           created_at: a_date_last_week, sleep_duration_in_seconds: rand(1000))
+      create(:sleep_time, user: followee_1)
+
+      list_2 = create_list(:sleep_time, 2, user: followee_2, ended_at: a_date_last_week,
+                           created_at: a_date_last_week, sleep_duration_in_seconds: rand(1000))
+      create_list(:sleep_time, 3, user: followee_2, ended_at: Time.current)
+
+      current_user.followees << [followee_1, followee_2]
+      result_list = current_user.followees_previous_week_sleep_times
+
+      expected_list = (list_1 + list_2).sort_by(&:sleep_duration_in_seconds)
+      expect(result_list.map(&:sleep_duration_in_seconds)).to eq(expected_list.map(&:sleep_duration_in_seconds))
+    end
+  end
 end
