@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :users do
+      resources :users, only: [:create, :index] do
         post 'follow/:followee_id', to: 'users#follow', as: 'follow'
         delete 'unfollow/:followee_id', to: 'users#unfollow', as: 'unfollow'
         get 'followees/sleep_records', to: 'users#followees_sleep_records', as: 'followees_sleep_records'

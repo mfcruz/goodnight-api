@@ -4,6 +4,38 @@ RSpec.describe "Api::V1::Users", type: :request do
   let(:current_user) { create(:user) }
   let(:followee) { create(:user) }
 
+  describe "GET /index" do
+    it "returns list of users" do
+      create_list(:user, 3)
+
+      get api_v1_users_path, as: :json
+
+      expected_result = { "data" => User.all.order(created_at: :desc).as_json }
+      expect(response).to have_http_status(:ok)
+      expect(response_json).to eq(expected_result)
+    end
+  end
+
+  describe "GET /create" do
+    context "parameters are valid" do
+      it "creates the user" do
+        post api_v1_users_path(name: "User001"), as: :json
+
+        expect(response).to have_http_status(:ok)
+        expect(User.last.name).to eq("User001")
+      end
+    end
+
+    context "parameters are invalid" do
+      it "returns an error response" do
+        post api_v1_users_path(name: ""), as: :json
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response_json).to eq({"name" => ["can't be blank"]})
+      end
+    end
+  end
+
   describe "POST /follow" do
     describe "valid parameters" do
       it "follows the followee" do
